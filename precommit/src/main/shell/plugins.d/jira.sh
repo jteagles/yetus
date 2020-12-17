@@ -383,15 +383,17 @@ function jira_write_comment
       echo "\"}"
     } > "${PATCH_DIR}/jiracomment.$$"
 
+  echo "${JIRA_USER}:${JIRA_URL}/${JIRA_ISSUE}"
     "${CURL}" -X POST \
          -H "Accept: application/json" \
          -H "Content-Type: application/json" \
          -u "${JIRA_USER}:${JIRA_PASSWD}" \
          -d @"${PATCH_DIR}/jiracomment.$$" \
-         --silent --location \
+         --location \
            "${JIRA_URL}/rest/api/2/issue/${JIRA_ISSUE}/comment" \
           >/dev/null
     retval=$?
+    echo "retval:$?"
     rm "${PATCH_DIR}/jiracomment.$$"
   else
     echo "JIRA Plugin: no credentials provided to write a comment."
